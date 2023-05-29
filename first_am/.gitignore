@@ -3,6 +3,10 @@
 *.log
 *.pyc
 *.swp
+*.cmake
+*.h
+*.cc
+*.swift
 .DS_Store
 .atom/
 .buildlog/
@@ -31,6 +35,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+
 
 # Symbolication related
 app.*.symbols
