@@ -1,6 +1,6 @@
 # First.AM
 
-First.AM is a public Spotify reports using their API's to monitorate the music behavior.
+First.AM is a public Last.fm recommendations app using their API's to monitorate the music behavior and get new tracked based in the user's behavior.
 
 ## Useful links below
 
