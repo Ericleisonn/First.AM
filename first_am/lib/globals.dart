@@ -9,6 +9,10 @@ class AuthUser{
   void setKey({key}){
     this.key = key;
   }
+
+  void setName({name}){
+    this.name = name;
+  }
 }
 
 AuthUser usuario = AuthUser();

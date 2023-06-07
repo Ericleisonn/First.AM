@@ -29,35 +29,48 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final GlobalKey<FormState> key = GlobalKey();
-  bool validate = false;
+  bool validate = false, logado = false;
   String username = '', senha = '';
   _MyAppState();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(title: const Text('first.AM')),
-          body: SingleChildScrollView(
-            child: Container(
-                margin: const EdgeInsets.all(15.0),
-                child: Form(key: key, child: loginForm())),
-          )),
-    );
+    return logado
+        ? MaterialApp(
+            home: Scaffold(
+                appBar: AppBar(
+                  title: const Text("First.AM"),
+                ),
+
+                /////////// BODY A SER IMPLEMENTADO //////////////////////////
+                body: const Center(child: Text("In Progress")),
+                //////////////////////////////////////////////////////////
+                ///
+                ///
+                bottomNavigationBar: BottomNavBar()))
+        : MaterialApp(
+            home: Scaffold(
+                appBar: AppBar(title: const Text('first.AM')),
+                body: SingleChildScrollView(
+                  child: Container(
+                      margin: const EdgeInsets.all(15.0),
+                      child: Form(key: key, child: loginForm())),
+                )),
+          );
   }
 
   Widget loginForm() {
     return Column(
       children: <Widget>[
         TextFormField(
-          decoration: InputDecoration(hintText: 'Nome de usuário'),
+          decoration: const InputDecoration(hintText: 'Nome de usuário'),
           maxLength: 40,
           onSaved: (String? val) {
             username = val!;
           },
         ),
         TextFormField(
-          decoration: InputDecoration(hintText: 'Senha'),
+          decoration: const InputDecoration(hintText: 'Senha'),
           maxLength: 40,
           obscureText: true,
           onSaved: (String? val) {
@@ -78,7 +91,12 @@ class _MyAppState extends State<MyApp> {
 
       fetchAccessToken(username, senha).then((res) {
         usuario.setKey(key: res['lfm']['session']['key']);
-        debugPrint(usuario.key);
+        usuario.setName(name: res['lfm']['session']['name']);
+        debugPrint('key = ${usuario.key}\nname = ${usuario.name}');
+      });
+
+      setState(() {
+        logado = true;
       });
     } else {
       setState(() {
