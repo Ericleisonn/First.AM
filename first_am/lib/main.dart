@@ -10,53 +10,54 @@ void main() {
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //       title: 'first.AM',
-  //       theme: ThemeData(primarySwatch: Colors.deepPurple),
-  //       debugShowCheckedModeBanner: false,
-  //       home: const HomePage()
-
-  //       //////////////////////////////////////////////////////////////////
-  //       // IMPLEMENTAR 'bottomNagivationBar: BottomNavBar' AQUI DEPOIS  //
-  //       //////////////////////////////////////////////////////////////////clecls
-
-  //       );
-  // }
 }
 
 class _MyAppState extends State<MyApp> {
   final GlobalKey<FormState> key = GlobalKey();
   bool validate = false, logado = false;
   String username = '', senha = '';
-  _MyAppState();
+  int currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
     return logado
         ? MaterialApp(
             home: Scaffold(
-                appBar: AppBar(
-                  title: const Text("First.AM"),
-                ),
-
-                /////////// BODY A SER IMPLEMENTADO //////////////////////////
-                body: const Center(child: Text("In Progress")),
-                //////////////////////////////////////////////////////////
-                ///
-                ///
-                bottomNavigationBar: BottomNavBar()))
+              appBar: AppBar(
+                title: const Text("First.AM"),
+              ),
+              body: getPageContent(),
+              bottomNavigationBar: BottomNavBar(callback: onPageChanged),
+            ),
+          )
         : MaterialApp(
             home: Scaffold(
-                appBar: AppBar(title: const Text('first.AM')),
-                body: SingleChildScrollView(
-                  child: Container(
-                      margin: const EdgeInsets.all(15.0),
-                      child: Form(key: key, child: loginForm())),
-                )),
+              appBar: AppBar(title: const Text('first.AM')),
+              body: SingleChildScrollView(
+                child: Container(
+                  margin: const EdgeInsets.all(15.0),
+                  child: Form(key: key, child: loginForm()),
+                ),
+              ),
+            ),
           );
+  }
+
+  Widget getPageContent() {
+    if (currentPage == 0) {
+      return ReportsPage();
+    } else if (currentPage == 1) {
+      return const Center(child: Text("Gráficos Page"));
+    } else if (currentPage == 2) {
+      return const Center(child: Text("Apps de Terceiros Page"));
+    }
+    return Container();
+  }
+
+  void onPageChanged(int index) {
+    setState(() {
+      currentPage = index;
+    });
   }
 
   Widget loginForm() {
@@ -106,23 +107,10 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-// COMANDO PARA REMOVER WARNING DO BOTTOMNAVBAR
-// ignore: must_be_immutable
 class BottomNavBar extends HookWidget {
-  var callback;
-  //FUNÇÃO APENAS PARA TESTAR FUNCIONALIDADE
+  final Function(int) callback;
 
-  void buttonPressed(int index) {
-    print("O botão $index foi tocado");
-  }
-
-  // FIM DA FUNÇÃO //
-
-  BottomNavBar({super.key, this.callback}) {
-    callback ??= (_) {
-      debugPrint(usuario.key);
-    };
-  }
+  BottomNavBar({Key? key, required this.callback}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -135,31 +123,82 @@ class BottomNavBar extends HookWidget {
       currentIndex: state.value,
       items: const [
         BottomNavigationBarItem(
-            label: "Relatórios", icon: Icon(Icons.date_range)),
+          label: "Relatórios",
+          icon: Icon(Icons.date_range),
+        ),
         BottomNavigationBarItem(
-            label: "Gráficos", icon: Icon(Icons.show_chart)),
+          label: "Gráficos",
+          icon: Icon(Icons.show_chart),
+        ),
         BottomNavigationBarItem(
-            label: "Apps de Terceiros", icon: Icon(Icons.device_hub))
+          label: "Apps de Terceiros",
+          icon: Icon(Icons.device_hub),
+        ),
       ],
     );
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class ReportsPage extends StatelessWidget {
+  final List<String> reportOptions = ['Artistas', 'Músicas', 'Álbuns'];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("First.AM"),
-        ),
-
-        /////////// BODY A SER IMPLEMENTADO //////////////////////////
-        body: const Center(child: Text("In Progress")),
-        //////////////////////////////////////////////////////////
-        ///
-        ///
-        bottomNavigationBar: BottomNavBar());
+    return ListView.builder(
+      itemCount: reportOptions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+            title: Text(reportOptions[index]),
+            onTap: () {
+              if (index == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ArtistsPage()),
+                );
+              }
+              if (index == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SongsPage()),
+                );
+              }
+              if (index == 2) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AlbunsPage()));
+              }
+            });
+      },
+    );
   }
 }
+
+class ArtistsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Artistas")),
+      body: Center(child: Text("Página de artistas")),
+    );
+  }
+}
+
+class SongsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Músicas")),
+      body: Center(child: Text("Página de músicas")),
+    );
+  }
+}
+
+class AlbunsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Álbuns")),
+      body: Center(child: Text("Página de álbuns")),
+    );
+  }
+}
+
