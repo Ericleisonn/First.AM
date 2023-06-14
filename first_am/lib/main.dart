@@ -215,7 +215,7 @@ class ArtistsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Artistas")),
-      body: Center(child: Text("Página de artistas")),
+      body: const Center(child: Text("Página de artistas")),
     );
   }
 }
@@ -225,7 +225,7 @@ class SongsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Músicas")),
-      body: Center(child: Text("Página de músicas")),
+      body: const Center(child: Text("Página de músicas")),
     );
   }
 }
@@ -235,7 +235,7 @@ class AlbunsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Álbuns")),
-      body: Center(child: Text("Página de álbuns")),
+      body: const Center(child: Text("Página de álbuns")),
     );
   }
 }
@@ -250,158 +250,161 @@ class ExternalLinks extends StatelessWidget {
         primarySwatch: Colors.green,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 54, 0, 43),
-          foregroundColor: Color.fromARGB(255, 0, 255, 8),
-          shadowColor: Colors.red,
+            backgroundColor: const Color.fromARGB(255, 54, 0, 43),
+            foregroundColor: const Color.fromARGB(255, 0, 255, 8),
+            shadowColor: Colors.red,
           ),
         ),
       ),
-      home: Padding(
-        padding: const EdgeInsets.all(20),
+      home: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            SizedBox(
-              width: 1000,
-              height: 80,
-              child:ElevatedButton(
-              child: Text('Receiptify'),
-              style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
-          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
-          shadowColor: Colors.red,
-          padding: const EdgeInsets.symmetric(
-            vertical: 10, horizontal: 10
-          ),
-          elevation: 20,
-          textStyle: const TextStyle(
-          color:Colors.black, ///////////
-          fontSize: 30,
-          fontStyle: FontStyle.italic)
-    ),
-              onPressed: () => _launchURL('https://receiptify.herokuapp.com'),
-            )),
-
-            SizedBox(
-              width: 1000,
-              height: 80,
-              child:ElevatedButton(
-              child: Text('Spotify Pie'),
-              style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
-          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
-          shadowColor: Colors.red,
-          padding: const EdgeInsets.symmetric(
-            vertical: 20, horizontal: 20
-          ),
-          elevation: 20,
-          textStyle: const TextStyle(
-          color:Colors.black, ///////////
-          fontSize: 30,
-          fontStyle: FontStyle.italic)
-    ),
-              onPressed: () => _launchURL('https://huangdarren1106.github.io'))),
-
-            SizedBox(
-              width: 1000,
-              height: 80,
-              child:ElevatedButton(
-              child: Text('Festify'),
-              style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
-          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
-          shadowColor: Colors.red,
-          padding: const EdgeInsets.symmetric(
-            vertical: 20, horizontal: 20
-          ),
-          elevation: 20,
-          textStyle: const TextStyle(
-          color:Colors.black, ///////////
-          fontSize: 30,
-          fontStyle: FontStyle.italic)
-    ),
-              onPressed: () => _launchURL('https://salty-beach-42139.herokuapp.com'))),
-
-            SizedBox(
-              width: 1000,
-              height: 80,
-              child:ElevatedButton(
-              child: Text('InstaFest'),
-              style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
-          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
-          shadowColor: Colors.red,
-          padding: const EdgeInsets.symmetric(
-            vertical: 20, horizontal: 20
-          ),
-          elevation: 20,
-          textStyle: const TextStyle(
-          color:Colors.black, ///////////
-          fontSize: 30,
-          fontStyle: FontStyle.italic)
-    ),
-              onPressed: () => _launchURL('https://www.instafest.app'))),
-
-            SizedBox(
-              width: 1000,
-              height: 80,
-              child:ElevatedButton(
-              child: Text('How Bad is Your Streaming Music?'),
-              style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
-          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
-          shadowColor: Colors.red,
-          padding: const EdgeInsets.symmetric(
-            vertical: 20, horizontal: 20
-          ),
-          elevation: 20,
-          textStyle: const TextStyle(
-          color:Colors.black, ///////////
-          fontSize: 27,
-          fontStyle: FontStyle.italic)
-    ),
-              onPressed: () => _launchURL('https://pudding.cool/2021/10/judge-my-music/'))),
-
-  SizedBox(
-              width: 1000,
-              height: 80,
-              child:ElevatedButton(
-              child: Text('MusicScape'),
-              style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
-          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
-          shadowColor: Colors.red,
-          padding: const EdgeInsets.symmetric(
-            vertical: 20, horizontal: 20
-          ),
-          elevation: 20,
-          textStyle: const TextStyle(
-          color:Colors.black, ///////////
-          fontSize: 30,
-          fontStyle: FontStyle.italic)
-    ),
-              onPressed: () => _launchURL('https://musicscapes.herokuapp.com'))),
-  SizedBox(
-              width: 1000,
-              height: 80,
-              child:ElevatedButton(
-              child: Text('Last.FM'),
-              style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
-          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
-          shadowColor: Colors.red,
-          padding: const EdgeInsets.symmetric(
-            vertical: 20, horizontal: 20
-          ),
-          elevation: 20,
-          textStyle: const TextStyle(
-          color:Colors.black, ///////////
-          fontSize: 30,
-          fontStyle: FontStyle.italic)
-    ),
-              onPressed: () => _launchURL('https://www.last.fm'))),
-
-
+            Container(
+                margin: EdgeInsets.all(8),
+                child: SizedBox(
+                    width: 1000,
+                    height: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
+                          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
+                          shadowColor: Colors.red,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          elevation: 20,
+                          textStyle: const TextStyle(
+                              color: Colors.black, ///////////
+                              fontSize: 30,
+                              fontStyle: FontStyle.italic)),
+                      onPressed: () =>
+                          _launchURL('https://receiptify.herokuapp.com'),
+                      child: const Text('Receiptify'),
+                    ))),
+            Container(
+                margin: EdgeInsets.all(8),
+                child: SizedBox(
+                    width: 1000,
+                    height: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
+                          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
+                          shadowColor: Colors.red,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          elevation: 20,
+                          textStyle: const TextStyle(
+                              color: Colors.black, ///////////
+                              fontSize: 30,
+                              fontStyle: FontStyle.italic)),
+                      onPressed: () =>
+                          _launchURL('https://huangdarren1106.github.io'),
+                      child: const Text('Spotify Pie'),
+                    ))),
+            Container(
+                margin: EdgeInsets.all(8),
+                child: SizedBox(
+                    width: 1000,
+                    height: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
+                          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
+                          shadowColor: Colors.red,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          elevation: 20,
+                          textStyle: const TextStyle(
+                              color: Colors.black, ///////////
+                              fontSize: 30,
+                              fontStyle: FontStyle.italic)),
+                      onPressed: () =>
+                          _launchURL('https://salty-beach-42139.herokuapp.com'),
+                      child: const Text('Festify'),
+                    ))),
+            Container(
+                margin: EdgeInsets.all(8),
+                child: SizedBox(
+                    width: 1000,
+                    height: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
+                          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
+                          shadowColor: Colors.red,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          elevation: 20,
+                          textStyle: const TextStyle(
+                              color: Colors.black, ///////////
+                              fontSize: 30,
+                              fontStyle: FontStyle.italic)),
+                      onPressed: () => _launchURL('https://www.instafest.app'),
+                      child: const Text('InstaFest'),
+                    ))),
+            Container(
+                margin: EdgeInsets.all(8),
+                child: SizedBox(
+                    width: 1000,
+                    height: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
+                          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
+                          shadowColor: Colors.red,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          elevation: 20,
+                          textStyle: const TextStyle(
+                              color: Colors.black, ///////////
+                              fontSize: 27,
+                              fontStyle: FontStyle.italic)),
+                      onPressed: () => _launchURL(
+                          'https://pudding.cool/2021/10/judge-my-music/'),
+                      child: const Text('How Bad is Your Streaming Music?'),
+                    ))),
+            Container(
+                margin: EdgeInsets.all(8),
+                child: SizedBox(
+                    width: 1000,
+                    height: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
+                          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
+                          shadowColor: Colors.red,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          elevation: 20,
+                          textStyle: const TextStyle(
+                              color: Colors.black, ///////////
+                              fontSize: 30,
+                              fontStyle: FontStyle.italic)),
+                      onPressed: () =>
+                          _launchURL('https://musicscapes.herokuapp.com'),
+                      child: const Text('MusicScape'),
+                    ))),
+            Container(
+                margin: EdgeInsets.all(8),
+                child: SizedBox(
+                    width: 1000,
+                    height: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 54, 0, 43),
+                          foregroundColor: const Color.fromARGB(255, 0, 255, 8),
+                          shadowColor: Colors.red,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          elevation: 20,
+                          textStyle: const TextStyle(
+                              color: Colors.black, ///////////
+                              fontSize: 30,
+                              fontStyle: FontStyle.italic)),
+                      onPressed: () => _launchURL('https://www.last.fm'),
+                      child: const Text('Last.FM'),
+                    ))),
           ],
         ),
       ),
@@ -409,11 +412,11 @@ class ExternalLinks extends StatelessWidget {
   }
 
   void _launchURL(var url) async {
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
       throw 'Não foi possível abrir o link $url';
     }
   }
 }
-
