@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:select_form_field/select_form_field.dart';
 import 'globals.dart';
 import 'auth.dart';
+import 'data_service.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,6 +29,41 @@ class MyApp extends StatefulWidget {
   // }
 }
 
+Widget render(int index) {
+  var tracks = <String>[];
+
+  serviceCountry("brazil")
+    .then((res) {
+      res["tracks"]["track"].map((track) => {
+        tracks.add(track["name"])
+      });
+
+      debugPrint(tracks.toString());
+    });
+
+  debugPrint(tracks.toString());
+
+  final widgets = [
+    Scaffold(
+        appBar: AppBar(title: const Text("First.AM")),
+        body: Column(
+          children: <Widget>[
+            const ListTile(title: Text("Top 10 Artistas - Brasil")),
+            Card(
+              child: Column(
+                children: tracks.map((track) => ListTile(title: Text(track))).toList(),
+              ),
+            )
+          ],
+        ),
+        bottomNavigationBar: BottomNavBar(),
+      ),
+  ];
+
+  return widgets[index];
+
+}
+
 class _MyAppState extends State<MyApp> {
   final GlobalKey<FormState> key = GlobalKey();
   bool validate = false, logado = false;
@@ -36,18 +73,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return logado
-        ? MaterialApp(
-            home: Scaffold(
-                appBar: AppBar(
-                  title: const Text("First.AM"),
-                ),
-
-                /////////// BODY A SER IMPLEMENTADO //////////////////////////
-                body: const Center(child: Text("In Progress")),
-                //////////////////////////////////////////////////////////
-                ///
-                ///
-                bottomNavigationBar: BottomNavBar()))
+        ? MaterialApp(home: render(0))
         : MaterialApp(
             home: Scaffold(
                 appBar: AppBar(title: const Text('first.AM')),
@@ -55,8 +81,8 @@ class _MyAppState extends State<MyApp> {
                   child: Container(
                       margin: const EdgeInsets.all(15.0),
                       child: Form(key: key, child: loginForm())),
-                )),
-          );
+                ),
+            ));
   }
 
   Widget loginForm() {
