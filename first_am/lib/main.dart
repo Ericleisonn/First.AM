@@ -210,50 +210,6 @@ class ArtistsPage extends StatelessWidget {
   }
 }
 
-class ReportsPage extends StatelessWidget {
-  final List<String> reportOptions = ['Artistas', 'Músicas', 'Álbuns'];
-
-class SongsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: reportOptions.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-            title: Text(reportOptions[index]),
-            onTap: () {
-              if (index == 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ArtistsPage()),
-                );
-              }
-              if (index == 1) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SongsPage()),
-                );
-              }
-              if (index == 2) {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AlbunsPage()));
-              }
-            });
-      },
-    );
-  }
-}
-
-class ArtistsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Artistas")),
-      body: Center(child: Text("Página de artistas")),
-    );
-  }
-}
-
 class SongsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
