@@ -3,7 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'globals.dart';
 import 'auth.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'data_service.dart';
 
+final dataService = DataService();
 
 void main() {
   runApp(MyApp());
@@ -49,7 +51,7 @@ class _MyAppState extends State<MyApp> {
     if (currentPage == 0) {
       return ReportsPage();
     } else if (currentPage == 1) {
-      return const Center(child: Text("Gráficos Page"));
+      return ChartsPage();
     } else if (currentPage == 2) {
       return ExternalLinks();
     }
@@ -139,8 +141,41 @@ class BottomNavBar extends HookWidget {
   }
 }
 
+class ChartsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    dataService.carregar();
 
-
+    return Scaffold(
+        body: ValueListenableBuilder(
+            valueListenable: dataService.stateNotifier,
+            builder: (_, value, __) {
+              return ListView(
+                children: [
+                  const ListTile(title: Text("Top 10 Músicas - Brasil")),
+                  Column(
+                      children: value["tracks"]
+                          .map((track) {
+                            return ListTile(
+                                title: Text(track["name"]),
+                                subtitle: Text(track["artist"]["name"]),
+                                leading: Image.network(
+                                    track["image"].elementAt(0)["#text"]));
+                          })
+                          .toList()
+                          .cast<Widget>()),
+                  const ListTile(title: Text("Top 10 Artistas - Brasil")),
+                  Column(
+                    children: value["artists"]
+                        .map((artist) => Card(child: Text('${artist["name"]}')))
+                        .toList()
+                        .cast<Widget>(),
+                  )
+                ],
+              );
+            }));
+  }
+}
 
 class ReportsPage extends StatelessWidget {
   final List<String> reportOptions = ['Artistas', 'Músicas', 'Álbuns'];
