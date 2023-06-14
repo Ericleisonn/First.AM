@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'globals.dart';
 import 'auth.dart';
+import 'data_service.dart';
+
+final dataService = DataService();
 
 void main() {
   runApp(MyApp());
@@ -47,7 +50,7 @@ class _MyAppState extends State<MyApp> {
     if (currentPage == 0) {
       return ReportsPage();
     } else if (currentPage == 1) {
-      return const Center(child: Text("Gráficos Page"));
+      return ChartsPage();
     } else if (currentPage == 2) {
       return const Center(child: Text("Apps de Terceiros Page"));
     }
@@ -139,9 +142,78 @@ class BottomNavBar extends HookWidget {
   }
 }
 
+class ChartsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    dataService.carregar();
+
+    return Scaffold(
+        body: ValueListenableBuilder(
+            valueListenable: dataService.stateNotifier,
+            builder: (_, value, __) {
+              return ListView(
+                children: [
+                  const ListTile(title: Text("Top 10 Músicas - Brasil")),
+                  Column(
+                    children: value["tracks"].map((track) => Card(child: Text('${int.parse(track['@attr']['rank']) + 1}. ${track["name"]} - ${track["artist"]["name"]}'))).toList().cast<Widget>(),
+                  ),
+                  const ListTile(title: Text("Top 10 Artistas - Brasil")),
+                  Column(
+                    children: value["artists"].map((artist) => Card(child: Text('${artist["name"]}'))).toList().cast<Widget>(),
+                  )
+                ],
+              );
+            }));
+  }
+}
+
 class ReportsPage extends StatelessWidget {
   final List<String> reportOptions = ['Artistas', 'Músicas', 'Álbuns'];
 
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: reportOptions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+            title: Text(reportOptions[index]),
+            onTap: () {
+              if (index == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ArtistsPage()),
+                );
+              }
+              if (index == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SongsPage()),
+                );
+              }
+              if (index == 2) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AlbunsPage()));
+              }
+            });
+      },
+    );
+  }
+}
+
+class ArtistsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Artistas")),
+      body: Center(child: Text("Página de artistas")),
+    );
+  }
+}
+
+class ReportsPage extends StatelessWidget {
+  final List<String> reportOptions = ['Artistas', 'Músicas', 'Álbuns'];
+
+class SongsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
