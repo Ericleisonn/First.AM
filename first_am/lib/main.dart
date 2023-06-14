@@ -155,11 +155,22 @@ class ChartsPage extends StatelessWidget {
                 children: [
                   const ListTile(title: Text("Top 10 Músicas - Brasil")),
                   Column(
-                    children: value["tracks"].map((track) => Card(child: Text('${int.parse(track['@attr']['rank']) + 1}. ${track["name"]} - ${track["artist"]["name"]}'))).toList().cast<Widget>(),
-                  ),
+                      children: value["tracks"]
+                          .map((track) {
+                            return ListTile(
+                                title: Text(track["name"]),
+                                subtitle: Text(track["artist"]["name"]),
+                                leading: Image.network(
+                                    track["image"].elementAt(0)["#text"]));
+                          })
+                          .toList()
+                          .cast<Widget>()),
                   const ListTile(title: Text("Top 10 Artistas - Brasil")),
                   Column(
-                    children: value["artists"].map((artist) => Card(child: Text('${artist["name"]}'))).toList().cast<Widget>(),
+                    children: value["artists"]
+                        .map((artist) => Card(child: Text('${artist["name"]}')))
+                        .toList()
+                        .cast<Widget>(),
                   )
                 ],
               );
@@ -230,3 +241,18 @@ class AlbunsPage extends StatelessWidget {
   }
 }
 
+class TrackPage extends StatelessWidget {
+  Map track = {};
+
+  TrackPage(this.track);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Música")),
+      body: Column(
+        children: [],
+      ),
+    );
+  }
+}
