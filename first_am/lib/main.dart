@@ -179,72 +179,8 @@ class ChartsPage extends StatelessWidget {
   }
 }
 
-/*
 class ReportsPage extends StatelessWidget {
-  final List<String> reportOptions = ['Artistas', 'Músicas', 'Álbuns'];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: reportOptions.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-            title: Text(reportOptions[index]),
-            onTap: () {
-              if (index == 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ArtistsPage()),
-                );
-              }
-              if (index == 1) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SongsPage()),
-                );
-              }
-              if (index == 2) {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AlbunsPage()));
-              }
-            });
-      },
-    );
-  }
-}
-
-class ArtistsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Artistas")),
-      body: const Center(child: Text("Página de artistas")),
-    );
-  }
-}
-
-class SongsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Músicas")),
-      body: const Center(child: Text("Página de músicas")),
-    );
-  }
-}
-
-class AlbunsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Álbuns")),
-      body: const Center(child: Text("Página de álbuns")),
-    );
-  }
-}
-*/
-
-class ReportsPage extends StatelessWidget {
+  ReportsPage({Key? key}) : super(key: key);
   final List<String> reportOptions = ['Artistas', 'Músicas', 'Álbuns'];
 
   @override
@@ -278,12 +214,14 @@ class ReportsPage extends StatelessWidget {
 }
 
 class UserArtistsPage extends StatefulWidget {
+  const UserArtistsPage({Key? key}) : super(key: key);
   @override
-  _UserArtistsPageState createState() => _UserArtistsPageState();
+  UserArtistsPageState createState() => UserArtistsPageState();
 }
 
-class _UserArtistsPageState extends State<UserArtistsPage> {
+class UserArtistsPageState extends State<UserArtistsPage> {
   List<String> artists = [];
+  int selectedLimit = 10;
 
   @override
   void initState() {
@@ -296,7 +234,7 @@ class _UserArtistsPageState extends State<UserArtistsPage> {
     final username = usuario.name;
 
     final url =
-        'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=$username&api_key=$apiKey&format=json';
+        'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=$username&api_key=$apiKey&format=json&limit=$selectedLimit';
 
     final response = await http.get(Uri.parse(url));
 
@@ -312,12 +250,40 @@ class _UserArtistsPageState extends State<UserArtistsPage> {
     }
   }
 
+  void onLimitChanged(int? value) {
+    setState(() {
+      selectedLimit = value!;
+    });
+    fetchUserArtists();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Seus Artistas Mais Ouvidos'),
-      ),
+          title: Row(
+        children: [
+          const Text("Seus Artistas Mais Ouvidos"),
+          DropdownButton<int>(
+            value: selectedLimit,
+            items: const [
+              DropdownMenuItem<int>(
+                value: 5,
+                child: Text('5'),
+              ),
+              DropdownMenuItem<int>(
+                value: 10,
+                child: Text('10'),
+              ),
+              DropdownMenuItem<int>(
+                value: 20,
+                child: Text('20'),
+              ),
+            ],
+            onChanged: onLimitChanged,
+          )
+        ],
+      )),
       body: ListView.builder(
         itemCount: artists.length,
         itemBuilder: (context, index) {
@@ -331,12 +297,14 @@ class _UserArtistsPageState extends State<UserArtistsPage> {
 }
 
 class UserTracksPage extends StatefulWidget {
+  const UserTracksPage({Key? key}) : super(key: key);
   @override
-  _UserTracksPageState createState() => _UserTracksPageState();
+  UserTracksPageState createState() => UserTracksPageState();
 }
 
-class _UserTracksPageState extends State<UserTracksPage> {
+class UserTracksPageState extends State<UserTracksPage> {
   List<String> tracks = [];
+  int selectedLimit = 10;
 
   @override
   void initState() {
@@ -349,7 +317,7 @@ class _UserTracksPageState extends State<UserTracksPage> {
     final username = usuario.name;
 
     final url =
-        'http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=$username&api_key=$apiKey&format=json';
+        'http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=$username&api_key=$apiKey&format=json&limit=$selectedLimit';
 
     final response = await http.get(Uri.parse(url));
 
@@ -365,14 +333,46 @@ class _UserTracksPageState extends State<UserTracksPage> {
     }
   }
 
+  void onLimitChanged(int? value) {
+    setState(() {
+      selectedLimit = value!;
+    });
+    fetchUserTracks();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Suas Músicas Mais Ouvidas")),
+      appBar: AppBar(
+          title: Row(
+        children: [
+          const Text("Suas Músicas Mais Ouvidas"),
+          DropdownButton(
+            value: selectedLimit,
+            items: const [
+              DropdownMenuItem<int>(
+                value: 5, 
+                child: Text('5'),
+              ),
+              DropdownMenuItem<int>(
+                value: 10, 
+                child: Text('10'),
+              ),
+              DropdownMenuItem<int>(
+                value: 20,
+                child: Text('20'),
+              ),
+            ],
+            onChanged: onLimitChanged,
+          ),
+        ],
+      )),
       body: ListView.builder(
         itemCount: tracks.length,
         itemBuilder: (context, index) {
-          return ListTile(title: Text(tracks[index]));
+          return ListTile(
+            title: Text(tracks[index]),
+          );
         },
       ),
     );
@@ -380,12 +380,14 @@ class _UserTracksPageState extends State<UserTracksPage> {
 }
 
 class UserAlbumsPage extends StatefulWidget {
+  const UserAlbumsPage({Key? key}) : super(key: key);
   @override
-  _UserAlbumsPageState createState() => _UserAlbumsPageState();
+  UserAlbumsPageState createState() => UserAlbumsPageState();
 }
 
-class _UserAlbumsPageState extends State<UserAlbumsPage> {
+class UserAlbumsPageState extends State<UserAlbumsPage> {
   List<String> albums = [];
+  int selectedLimit = 10;
 
   @override
   void initState() {
@@ -398,7 +400,7 @@ class _UserAlbumsPageState extends State<UserAlbumsPage> {
     final username = usuario.name;
 
     final url =
-        'http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=$username&api_key=$apiKey&format=json';
+        'http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=$username&api_key=$apiKey&format=json&limit=$selectedLimit';
 
     final response = await http.get(Uri.parse(url));
 
@@ -414,14 +416,47 @@ class _UserAlbumsPageState extends State<UserAlbumsPage> {
     }
   }
 
+  void onLimitChanged(int? value) {
+    setState(() {
+      selectedLimit = value!;
+    });
+    fetchUserAlbums();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Seus Albuns Mais Ouvidos")),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            const Text("Seus Albuns Mais Ouvidos"),
+            DropdownButton<int>(
+              value: selectedLimit,
+              items: const [
+                DropdownMenuItem<int>(
+                  value: 5,
+                  child: Text('5'),
+                ),
+                DropdownMenuItem<int>(
+                  value: 10,
+                  child: Text('10'),
+                ),
+                DropdownMenuItem<int>(
+                  value: 20,
+                  child: Text('20'),
+                ),
+              ],
+              onChanged: onLimitChanged,
+            ),
+          ],
+        ),
+      ),
       body: ListView.builder(
         itemCount: albums.length,
         itemBuilder: (context, index) {
-          return ListTile(title: Text(albums[index]));
+          return ListTile(
+            title: Text(albums[index]),
+          );
         },
       ),
     );
