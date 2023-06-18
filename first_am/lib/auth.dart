@@ -11,13 +11,11 @@ Future<Map> fetchAccessToken(String username, String senha) async {
     'api_sig': '91b168fb5038ce65ea18c81122eb465f',
   };
 
-  var apiSig =
-      'api_key${data['api_key']}methodauth.getMobileSessionpassword${data['password']}username${data['username']}${data['api_sig']}';
+  var apiSig = 'api_key${data['api_key']}methodauth.getMobileSessionpassword${data['password']}username${data['username']}${data['api_sig']}';
 
   // var url = Uri.parse('https://accounts.spotify.com/api/token');
   var sigmd5 = md5.convert(utf8.encode(apiSig)).toString();
-  var url =
-      'https://ws.audioscrobbler.com/2.0/?method=auth.getMobileSession&username=tgomas_fm&password=Tho28072@@2&api_key=f62a2d2d3a59bc0a79c85e8f04e18b8b&api_sig=${sigmd5}';
+  var url = 'https://ws.audioscrobbler.com/2.0/?method=auth.getMobileSession&username=${data['username']}&password=${data['password']}&api_key=f62a2d2d3a59bc0a79c85e8f04e18b8b&api_sig=${sigmd5}';
 
   var res = await http.post(Uri.parse(url));
 

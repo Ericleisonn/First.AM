@@ -4,6 +4,8 @@ import 'globals.dart';
 import 'auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'data_service.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 final dataService = DataService();
 
@@ -177,6 +179,7 @@ class ChartsPage extends StatelessWidget {
   }
 }
 
+/*
 class ReportsPage extends StatelessWidget {
   final List<String> reportOptions = ['Artistas', 'Músicas', 'Álbuns'];
 
@@ -236,6 +239,191 @@ class AlbunsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Álbuns")),
       body: const Center(child: Text("Página de álbuns")),
+    );
+  }
+}
+*/
+
+class ReportsPage extends StatelessWidget {
+  final List<String> reportOptions = ['Artistas', 'Músicas', 'Álbuns'];
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: reportOptions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+            title: Text(reportOptions[index]),
+            onTap: () {
+              if (index == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserArtistsPage()),
+                );
+              }
+              if (index == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserTracksPage()),
+                );
+              }
+              if (index == 2) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UserAlbumsPage()));
+              }
+            });
+      },
+    );
+  }
+}
+
+class UserArtistsPage extends StatefulWidget {
+  @override
+  _UserArtistsPageState createState() => _UserArtistsPageState();
+}
+
+class _UserArtistsPageState extends State<UserArtistsPage> {
+  List<String> artists = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserArtists();
+  }
+
+  Future<void> fetchUserArtists() async {
+    const apiKey = 'f62a2d2d3a59bc0a79c85e8f04e18b8b';
+    final username = usuario.name;
+
+    final url =
+        'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=$username&api_key=$apiKey&format=json';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final topArtists = data['topartists']['artist'];
+
+      setState(() {
+        artists = List<String>.from(topArtists.map((artist) => artist['name']));
+      });
+    } else {
+      print('Failed to fetch user artists');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Seus Artistas Mais Ouvidos'),
+      ),
+      body: ListView.builder(
+        itemCount: artists.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(artists[index]),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class UserTracksPage extends StatefulWidget {
+  @override
+  _UserTracksPageState createState() => _UserTracksPageState();
+}
+
+class _UserTracksPageState extends State<UserTracksPage> {
+  List<String> tracks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserTracks();
+  }
+
+  Future<void> fetchUserTracks() async {
+    const apiKey = 'f62a2d2d3a59bc0a79c85e8f04e18b8b';
+    final username = usuario.name;
+
+    final url =
+        'http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=$username&api_key=$apiKey&format=json';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final topTracks = data['toptracks']['track'];
+
+      setState(() {
+        tracks = List<String>.from(topTracks.map((track) => track['name']));
+      });
+    } else {
+      print('Failed to fetch user songs');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Suas Músicas Mais Ouvidas")),
+      body: ListView.builder(
+        itemCount: tracks.length,
+        itemBuilder: (context, index) {
+          return ListTile(title: Text(tracks[index]));
+        },
+      ),
+    );
+  }
+}
+
+class UserAlbumsPage extends StatefulWidget {
+  @override
+  _UserAlbumsPageState createState() => _UserAlbumsPageState();
+}
+
+class _UserAlbumsPageState extends State<UserAlbumsPage> {
+  List<String> albums = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserAlbums();
+  }
+
+  Future<void> fetchUserAlbums() async {
+    const apiKey = 'f62a2d2d3a59bc0a79c85e8f04e18b8b';
+    final username = usuario.name;
+
+    final url =
+        'http://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=$username&api_key=$apiKey&format=json';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final topAlbums = data['topalbums']['album'];
+
+      setState(() {
+        albums = List<String>.from(topAlbums.map((album) => album['name']));
+      });
+    } else {
+      print('Failed to fetch user albums');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Seus Albuns Mais Ouvidos")),
+      body: ListView.builder(
+        itemCount: albums.length,
+        itemBuilder: (context, index) {
+          return ListTile(title: Text(albums[index]));
+        },
+      ),
     );
   }
 }
