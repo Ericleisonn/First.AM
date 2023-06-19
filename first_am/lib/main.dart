@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'data_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:getwidget/getwidget.dart';
 
 final dataService = DataService();
 
@@ -152,24 +153,26 @@ class ChartsPage extends StatelessWidget {
         body: ValueListenableBuilder(
             valueListenable: dataService.stateNotifier,
             builder: (_, value, __) {
-              return ListView(
+              return value["tracks"] == null ? 
+                const Center(child: GFLoader(),)
+               : ListView(
                 children: [
-                  const ListTile(title: Text("Top 10 Músicas - Brasil")),
+                  const ListTile(title: Text("Top 10 Músicas - Brasil"),
+                  titleTextStyle: TextStyle(fontWeight: FontWeight.bold)),
                   Column(
                       children: value["tracks"]
                           .map((track) {
                             return ListTile(
                                 title: Text(track["name"]),
-                                subtitle: Text(track["artist"]["name"]),
-                                leading: Image.network(
-                                    track["image"].elementAt(0)["#text"]));
+                                subtitle: Text(track["artist"]["name"]));
                           })
                           .toList()
                           .cast<Widget>()),
-                  const ListTile(title: Text("Top 10 Artistas - Brasil")),
+                  const ListTile(title: Text("Top 10 Artistas - Brasil"),
+                  titleTextStyle: TextStyle(fontWeight: FontWeight.bold)),
                   Column(
                     children: value["artists"]
-                        .map((artist) => Card(child: Text('${artist["name"]}')))
+                        .map((artist) => ListTile(title: Text('${artist["name"]}')))
                         .toList()
                         .cast<Widget>(),
                   )
@@ -284,7 +287,9 @@ class UserArtistsPageState extends State<UserArtistsPage> {
           )
         ],
       )),
-      body: ListView.builder(
+      body: artists == [] ? 
+      const Center(child: GFLoader(),)
+      : ListView.builder(
         itemCount: artists.length,
         itemBuilder: (context, index) {
           return ListTile(
@@ -367,7 +372,9 @@ class UserTracksPageState extends State<UserTracksPage> {
           ),
         ],
       )),
-      body: ListView.builder(
+      body: tracks == [] ?
+      const Center(child: GFLoader())
+      : ListView.builder(
         itemCount: tracks.length,
         itemBuilder: (context, index) {
           return ListTile(
@@ -451,7 +458,9 @@ class UserAlbumsPageState extends State<UserAlbumsPage> {
           ],
         ),
       ),
-      body: ListView.builder(
+      body: albums == [] ?
+      const Center(child: GFLoader(),)
+      : ListView.builder(
         itemCount: albums.length,
         itemBuilder: (context, index) {
           return ListTile(
