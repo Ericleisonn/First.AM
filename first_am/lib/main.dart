@@ -223,7 +223,7 @@ class UserArtistsPage extends StatefulWidget {
 }
 
 class UserArtistsPageState extends State<UserArtistsPage> {
-  List<String> artists = [];
+  List<dynamic> artists = [];
   int selectedLimit = 10;
 
   @override
@@ -246,7 +246,7 @@ class UserArtistsPageState extends State<UserArtistsPage> {
       final topArtists = data['topartists']['artist'];
 
       setState(() {
-        artists = List<String>.from(topArtists.map((artist) => artist['name']));
+        artists = List<dynamic>.from(topArtists);
       });
     } else {
       print('Failed to fetch user artists');
@@ -292,8 +292,10 @@ class UserArtistsPageState extends State<UserArtistsPage> {
       : ListView.builder(
         itemCount: artists.length,
         itemBuilder: (context, index) {
+          final artist = artists[index];
           return ListTile(
-            title: Text(artists[index]),
+            leading: Image.network(artist['image'][3]['#text']),
+            title: Text(artist['name']),
           );
         },
       ),
@@ -308,7 +310,7 @@ class UserTracksPage extends StatefulWidget {
 }
 
 class UserTracksPageState extends State<UserTracksPage> {
-  List<String> tracks = [];
+  List<dynamic> tracks = [];
   int selectedLimit = 10;
 
   @override
@@ -331,7 +333,7 @@ class UserTracksPageState extends State<UserTracksPage> {
       final topTracks = data['toptracks']['track'];
 
       setState(() {
-        tracks = List<String>.from(topTracks.map((track) => track['name']));
+        tracks = List<dynamic>.from(topTracks);
       });
     } else {
       print('Failed to fetch user songs');
@@ -356,11 +358,11 @@ class UserTracksPageState extends State<UserTracksPage> {
             value: selectedLimit,
             items: const [
               DropdownMenuItem<int>(
-                value: 5, 
+                value: 5,
                 child: Text('5'),
               ),
               DropdownMenuItem<int>(
-                value: 10, 
+                value: 10,
                 child: Text('10'),
               ),
               DropdownMenuItem<int>(
@@ -377,8 +379,10 @@ class UserTracksPageState extends State<UserTracksPage> {
       : ListView.builder(
         itemCount: tracks.length,
         itemBuilder: (context, index) {
+          final track = tracks[index];
           return ListTile(
-            title: Text(tracks[index]),
+            leading: Image.network(track['image'][3]['#text']),
+            title: Text(track['name']),
           );
         },
       ),
@@ -393,7 +397,7 @@ class UserAlbumsPage extends StatefulWidget {
 }
 
 class UserAlbumsPageState extends State<UserAlbumsPage> {
-  List<String> albums = [];
+  List<dynamic> albums = [];
   int selectedLimit = 10;
 
   @override
@@ -416,7 +420,7 @@ class UserAlbumsPageState extends State<UserAlbumsPage> {
       final topAlbums = data['topalbums']['album'];
 
       setState(() {
-        albums = List<String>.from(topAlbums.map((album) => album['name']));
+        albums = List<dynamic>.from(topAlbums);
       });
     } else {
       print('Failed to fetch user albums');
@@ -463,8 +467,10 @@ class UserAlbumsPageState extends State<UserAlbumsPage> {
       : ListView.builder(
         itemCount: albums.length,
         itemBuilder: (context, index) {
+          final album = albums[index];
           return ListTile(
-            title: Text(albums[index]),
+            leading: Image.network(album['image'][3]['#text']),
+            title: Text(album['name']),
           );
         },
       ),
